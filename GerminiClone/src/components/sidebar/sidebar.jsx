@@ -13,7 +13,7 @@ function Sidebar() {
                 <img src= {assets.plus_icon} alt="" />
                 <p>New chat</p>
             </div>
-            <div className='recdnt'>
+            <div className='recent'>
                 <p className="recent-title">Recent</p>
                 <div className="recent-enry">
                     <img src={assets.message_icon} alt="" />
