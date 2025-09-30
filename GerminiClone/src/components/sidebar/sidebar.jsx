@@ -28,7 +28,7 @@ function Sidebar() {
             </div>
             <div className="buttom-item recent-entry">
                 <img src={assets.history_icon} alt="" />
-                <p>History</p>
+                <p>Activity</p>
             </div>
             <div className="buttom-item recent-entry">
                 <img src={assets.setting_icon} alt="" />
