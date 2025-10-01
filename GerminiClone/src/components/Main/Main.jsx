@@ -10,10 +10,11 @@ const main = () => {
             <img src={assets.user_icon} alt="" />
         </div>
         <div className="main-container">
-            <p><span>Hello, Recruiter</span></p>
-            <p>How can I help you today?</p>
-        </div>
-        <div className="cards">
+            <div className="greet">
+                <p><span>Hello, Recruiter</span></p>
+                <p>How can I help you today?</p>
+            </div>
+            <div className="cards">
             <div className="card">
                 <p>Suggest beautiful places to go on your next roadtrip</p>
                 <img src={assets.compass_icon} alt="" />
@@ -31,6 +32,8 @@ const main = () => {
                 <img src={assets.code_icon} alt="" />
             </div>
         </div>
+        </div>
+        
     </div>
   )
 }
