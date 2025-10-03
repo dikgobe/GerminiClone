@@ -32,6 +32,19 @@ const main = () => {
                 <img src={assets.code_icon} alt="" />
             </div>
         </div>
+        <div className="main-bottom">
+            <div className="search-box">
+                <input type="text" placeholder='Enter your prompt here' />
+            </div>
+            <div>
+                <img src={assets.gallery_icon} alt="" />
+                <img src={assets.mic_icon} alt="" />
+                <img src={assets.send_icon} alt="" />
+            </div>
+        </div>
+        <p className="bottom-info">
+            This is Dikgobe James Molepo generative Ai application using germini 
+        </p>
         </div>
         
     </div>
