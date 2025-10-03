@@ -98,3 +98,15 @@ position: relative;
     padding: 8px;
     font-size: 18px;
 }
+
+.search-box div{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.main .bottom-info {
+    font-size: 13px;
+    margin: 15px;
+    text-align: center;
+    font-weight: 300;
+}
