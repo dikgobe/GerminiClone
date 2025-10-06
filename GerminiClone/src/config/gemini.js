@@ -5,65 +5,49 @@ const apiKey = "AIzaSyAtmhrucGfElcT1PFAKF97sZhXyafVQQOA"
 // npm install @google/genai mime
 // npm install -D @types/node
 
-import {
-  GoogleGenAI,
-} from '@google/genai';
-import mime from 'mime';
-import { writeFile } from 'fs';
+const {
+    GoogleGenerativeAI,
+    HarmCategory,
+    HarmBlockThreshold,
+} = require("@google/generative-ai")
 
-function saveBinaryFile(fileName: string, content: Buffer) {
-  writeFile(fileName, content, 'utf8', (err) => {
-    if (err) {
-      console.error(`Error writing file ${fileName}:`, err);
-      return;
-    }
-    console.log(`File ${fileName} saved to file system.`);
-  });
-}
+const MODEL_NAME = "gemini-1.0-pro"
+const API_KEY =  "AIzaSyAtmhrucGfElcT1PFAKF97sZhXyafVQQOA"
 
-async function main() {
-  const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
-  });
-  const config = {
-    responseModalities: [
-        'IMAGE',
-        'TEXT',
-    ],
-  };
-  const model = 'gemini-2.5-flash-image';
-  const contents = [
-    {
-      role: 'user',
-      parts: [
-        {
-          text: `INSERT_INPUT_HERE`,
+async function runChat() {
+    const client = new GoogleGenerativeAI(API_KEY)
+    const model = GenerativeModel.GenerativeModel({model: MODEL_NAME});
+
+    const genarationConfig = {
+        temperature: 0.9,
+        maxOutputTokens: 2044,
+        topP: 1,
+        topK: 1,
+    };
+    const safetySettings = [
+        {category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
         },
-      ],
-    },
-  ];
+        {category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+        },
+        {category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+        },
+        {category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+        threshold: HarmBlockThreshold.BLOCK_HIGH_AND_ABOVE,
+        },
+        {category: HarmCategory.HARM_CATEGORY_SELF_HARM,
+        threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+        },
+    ];
+    const chat = model.startChat({
+        safetySettings,
+        generationConfig,
+        history: [],
+    });
 
-  const response = await ai.models.generateContentStream({
-    model,
-    config,
-    contents,
-  });
-  let fileIndex = 0;
-  for await (const chunk of response) {
-    if (!chunk.candidates || !chunk.candidates[0].content || !chunk.candidates[0].content.parts) {
-      continue;
-    }
-    if (chunk.candidates?.[0]?.content?.parts?.[0]?.inlineData) {
-      const fileName = `ENTER_FILE_NAME_${fileIndex++}`;
-      const inlineData = chunk.candidates[0].content.parts[0].inlineData;
-      const fileExtension = mime.getExtension(inlineData.mimeType || '');
-      const buffer = Buffer.from(inlineData.data || '', 'base64');
-      saveBinaryFile(`${fileName}.${fileExtension}`, buffer);
-    }
-    else {
-      console.log(chunk.text);
-    }
-  }
+    const result = await chat.sendMessage("YOUR_USER_INPUT");
+    const response = result.response
+    console.log(result.text);
 }
-
-main();
