@@ -47,7 +47,9 @@ async function runChat() {
         history: [],
     });
 
-    const result = await chat.sendMessage("YOUR_USER_INPUT");
+    const result = await chat.sendMessage(prompt);
     const response = result.response
-    console.log(result.text);
+    console.log(response.text);
 }
+
+export default runChat
